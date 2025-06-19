@@ -5,16 +5,28 @@ MAMBA_ROOT="${HOME}/micromamba"
 export MAMBA_ROOT_PREFIX="${MAMBA_ROOT}"
 
 # ----------------------------------------------------------------------
-# 1.  Install micromamba (static binary)
+# 1.  Install micromamba (static binary) – cross-platform
 # ----------------------------------------------------------------------
 if ! command -v micromamba &>/dev/null; then
   echo "🔧  Installing micromamba …"
-  curl -L \
-    https://github.com/mamba-org/micromamba-releases/releases/latest/download/micromamba-linux-64 \
-    -o /tmp/micromamba
+
+  # Detect OS / arch ⇒ pick the matching release artefact
+  OS="$(uname -s)"
+  ARCH="$(uname -m)"
+
+  case "${OS}-${ARCH}" in
+      Linux-x86_64)      MM_URL="https://github.com/mamba-org/micromamba-releases/releases/latest/download/micromamba-linux-64" ;;
+      Linux-aarch64)     MM_URL="https://github.com/mamba-org/micromamba-releases/releases/latest/download/micromamba-linux-aarch64" ;;
+      Darwin-x86_64)     MM_URL="https://github.com/mamba-org/micromamba-releases/releases/latest/download/micromamba-osx-64" ;;
+      Darwin-arm64)      MM_URL="https://github.com/mamba-org/micromamba-releases/releases/latest/download/micromamba-osx-arm64" ;;
+      *) echo "❌  Unsupported platform: ${OS}-${ARCH}"; exit 1 ;;
+  esac
+
+  curl -Ls "${MM_URL}" -o /tmp/micromamba
   chmod +x /tmp/micromamba
   export PATH="/tmp:$PATH"
 fi
+
 
 # ----------------------------------------------------------------------
 # 2.  One-shot shell hook (no ~/.bashrc needed)
