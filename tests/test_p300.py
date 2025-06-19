@@ -2,13 +2,11 @@
 
 import numpy as np
 from sklearn.datasets import make_classification
+from sklearn.model_selection import cross_val_score, StratifiedKFold
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.model_selection import StratifiedKFold, cross_val_score
 
 
 def test_synthetic_p300_lda():
-    """LDA should achieve at least 60% accuracy on toy data."""
-
     # Simulate imbalance similar to P300 (≈1:6)
     n_target = 200
     n_nontarget = n_target * 6
@@ -30,3 +28,4 @@ def test_synthetic_p300_lda():
     mean_acc = np.mean(scores)
     print(f"Mean CV accuracy on synthetic P300 data: {mean_acc:.3f}")
     assert mean_acc >= 0.60, "LDA baseline should exceed 60 % on toy data"
+
