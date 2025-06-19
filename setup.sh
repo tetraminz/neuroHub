@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-------------------------------------------------------------------
-Bootstrap the conda environment with micromamba + our dependencies
-------------------------------------------------------------------
 MAMBA_ROOT="${HOME}/mambaforge"
 
 if ! command -v micromamba &> /dev/null; then
@@ -18,9 +15,6 @@ echo "📦 Creating conda environment..."
 micromamba env remove -n p300-agent -y || true
 micromamba create -y -f environment.yaml
 
-------------------------------------------------------------------
-Activate env, pull any LFS‑tracked EEG toy data, register kernel
-------------------------------------------------------------------
 micromamba activate p300-agent
 
 echo "🎧 Pulling (small) LFS EEG assets..."
