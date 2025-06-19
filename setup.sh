@@ -1,30 +1,28 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Where we keep micromamba + all envs/caches
 MAMBA_ROOT="${HOME}/micromamba"
 export MAMBA_ROOT_PREFIX="${MAMBA_ROOT}"
 
 # ----------------------------------------------------------------------
-# 1.  Grab the latest static micromamba
+# 1.  Install micromamba (static binary)
 # ----------------------------------------------------------------------
 if ! command -v micromamba &>/dev/null; then
   echo "🔧  Installing micromamba …"
-  curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest \
-      | tar -xJ -C /tmp bin/micromamba
-  export PATH="/tmp/bin:$PATH"
+  curl -L \
+    https://github.com/mamba-org/micromamba-releases/releases/latest/download/micromamba-linux-64 \
+    -o /tmp/micromamba
+  chmod +x /tmp/micromamba
+  export PATH="/tmp:$PATH"
 fi
 
 # ----------------------------------------------------------------------
-# 2.  One-shot shell hook (no need to touch ~/.bashrc)
+# 2.  One-shot shell hook (no ~/.bashrc needed)
 # ----------------------------------------------------------------------
 eval "$(micromamba shell hook --shell=bash)"
 
-# OPTIONAL — persist hooks for future *interactive* sessions
-# micromamba shell init --shell=bash -r "${MAMBA_ROOT}"
-
 # ----------------------------------------------------------------------
-# 3.  Create or recreate the project env from environment.yaml
+# 3.  Create / recreate the env
 # ----------------------------------------------------------------------
 echo "📦  Creating conda environment …"
 micromamba create -y -n p300-agent -f environment.yaml
@@ -32,7 +30,7 @@ micromamba create -y -n p300-agent -f environment.yaml
 micromamba activate p300-agent
 
 # ----------------------------------------------------------------------
-# 4.  (Optional) pull small LFS demo data, register ipykernel
+# 4.  Optional data + kernel
 # ----------------------------------------------------------------------
 echo "🎧  Pulling LFS EEG assets (if any) …"
 git lfs install --skip-repo
