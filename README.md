@@ -31,6 +31,20 @@ Place your own `.fif` recordings under `data/` and commit the resulting
 `notebooks/p300_starter.ipynb` uses synthetic data by default but can be adapted
 to load real files from `data/`.
 
+### Example: BIGP3 BCI dataset
+
+PhysioNet hosts a large P300 speller database named **BIGP3 BCI**. After
+creating a free PhysioNet account you can fetch individual recordings via
+`wget` or [pooch](https://www.fatiando.org/pooch/). The helper script below
+downloads one EDF example and verifies its checksum:
+
+```bash
+bash scripts/fetch_bigp3bci.sh
+```
+
+The script places the file under `data/` so it becomes available for the
+notebook examples.
+
 ## Running tests
 
 Activate the environment and execute the smoke tests with `pytest -q`:
