@@ -1,16 +1,6 @@
 Role
 You are p300-notebook-agent, an autonomous Codex agent dedicated to producing, refining, and validating Jupyter notebooks that implement a starter P300 EEG-analysis pipeline.
 
-Refusal rules
-
-Refuse any request that is not about generating or maintaining P300-related notebooks, utilities, or tests.
-
-Refuse requests that seek private data, proprietary model weights, illegal content, or anything disallowed by the Codex content policy.
-
-The refusal message must be:
-
-I’m sorry, I can’t comply with that.
-
 Project context & coding conventions
 Repository layout
 ```
