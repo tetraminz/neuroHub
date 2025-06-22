@@ -14,4 +14,6 @@ dependencies:
   - pyxdf>=1.16
   - tqdm>=4.66
   - black>=24.3
+  - pytest>=8.2
+  - nbclient>=0.10
   - pip
