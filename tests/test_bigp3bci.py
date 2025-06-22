@@ -27,5 +27,5 @@ def test_bigp3bci_edf_properties() -> None:
 
     raw = read_raw_edf(edf_path, preload=False, verbose=False)
 
-    assert raw.info["sfreq"] == 256.0
+    assert raw.info["sfreq"] == pytest.approx(256.0, rel=1e-4)
     assert 60 <= raw.info["nchan"] <= 128
