@@ -10,23 +10,14 @@ Run `setup.sh` to create the **p300-agent** environment and install the Jupyter 
 bash setup.sh
 ```
 
-The script downloads **micromamba**, creates the conda environment based on `environment.yaml`, pulls optional Git LFS data and registers a `p300-agent` kernel for Jupyter.
+The script downloads **micromamba**, creates the conda environment based on `environment.yaml` and registers a `p300-agent` kernel for Jupyter.
 
 ## Data
 
-The project expects a `data/` directory (see `AGENTS.md`) for small EEG assets
-tracked with Git LFS. Real datasets are not bundled with the repository.
+The project expects a `data/` directory (see `AGENTS.md`) for small EEG assets.
+Real datasets are not bundled with the repository.
 
-To initialise and use Git LFS:
-
-```bash
-git lfs install           # enable LFS support
-git lfs pull              # fetch any available data
-git lfs track "data/*.fif"
-```
-
-Place your own `.fif` recordings under `data/` and commit the resulting
-`.gitattributes` so others can retrieve them via `git lfs pull`.
+Place your own `.fif` recordings under `data/` if you wish to work with real data.
 
 `notebooks/p300_starter.ipynb` uses synthetic data by default but can be adapted
 to load real files from `data/`.
@@ -62,6 +53,6 @@ Choose the **Python (p300-agent)** kernel when opening notebooks.
 
 1. `bash setup.sh`
 2. `micromamba activate p300-agent`
-3. `git lfs pull` or add recordings under `data/`
+3. Add recordings under `data/` (optional)
 4. `pytest -q`
 5. `jupyter lab`

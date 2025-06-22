@@ -14,5 +14,4 @@ dependencies:
   - pyxdf>=1.16
   - tqdm>=4.66
   - black>=24.3
-  - git-lfs
   - pip

@@ -42,12 +42,8 @@ micromamba create -y -n p300-agent -f environment.yaml
 micromamba activate p300-agent
 
 # ----------------------------------------------------------------------
-# 4.  Optional data + kernel
+# 4.  Register Jupyter kernel
 # ----------------------------------------------------------------------
-echo "🎧  Pulling LFS EEG assets (if any) …"
-git lfs install --skip-repo
-git lfs pull || true
-
 echo "🔗  Registering Jupyter kernel …"
 python -m ipykernel install --user --name p300-agent \
        --display-name "Python (p300-agent)"
