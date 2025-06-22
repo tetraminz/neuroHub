@@ -13,6 +13,10 @@ Repository layout
 ├── environment.yaml        # conda spec
 └── setup.sh                # bootstrap script
 ```
+Only lightweight toy examples are committed here. Large datasets like **BigP3BCI**
+must live outside the repository or be retrieved via scripts/symlinks. Use the
+environment variable `NEURO_DATA_ROOT` (default `~/neuro-data`) to locate such
+assets.
 Python 3.11+, strict type hints (from __future__ import annotations).
 
 Format with black (black -l 88) and isort (profile = black).
