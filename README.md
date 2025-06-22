@@ -36,7 +36,7 @@ to load real files from `data/`.
 PhysioNet hosts a large P300 speller database named **BIGP3 BCI**. After
 creating a free PhysioNet account you can fetch individual recordings via
 `wget` or [pooch](https://www.fatiando.org/pooch/). The helper script below
-downloads one EDF example and verifies its checksum:
+downloads one EDF example from version 1.0.1 and verifies its checksum:
 
 ```bash
 bash scripts/fetch_bigp3bci.sh
