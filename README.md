@@ -56,3 +56,32 @@ Choose the **Python (p300-agent)** kernel when opening notebooks.
 3. Add recordings under `data/` (optional)
 4. `pytest -q`
 5. `jupyter lab`
+
+## Using BigP3BCI data
+
+The repository contains metadata for the **bigP3BCI** dataset but not the full
+recordings. The dataset is licensed under the [CC BY 4.0 license](data/bigp3bci-an-open-diverse-and-machine-learning-ready-p300-based-brain-computer-interface-dataset-1.0.0/LICENSE.txt) and can be quite large,
+so store it outside of Git when working with the complete release.
+
+Files follow a multi-level directory structure:
+
+```
+StudyA/subject/session/phase/paradigm
+```
+
+The study folder may be `StudyA`, `StudyB`, `StudyC` and so on. Each contains
+subject IDs (for example `A_01`) which in turn contain session folders such as
+`SE001`. Inside a session you will find the `Train` and `Test` phases, and each
+phase stores one or more paradigm folders (for example `CB`).
+
+The dataset README describes the path template as:
+
+```
+Study#/<subject>/SE<session>/<Train|Test>/...
+```
+
+An example file path therefore looks like:
+
+```
+StudyA/A_01/SE001/Train/CB/A_01_SE001_CB_Train01.edf
+```
