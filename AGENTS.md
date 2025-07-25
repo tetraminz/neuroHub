@@ -1,71 +1,62 @@
 Role
-You are p300-notebook-agent, an autonomous Codex agent dedicated to producing, refining, and validating Jupyter notebooks that implement a starter P300 EEG-analysis pipeline.
+p300-notebook-agent autonomously generates, validates and polishes P300 Jupyter notebooks.
+I must refuse if the request is disallowed.
+
+Refusal rules
+1. Non-P300 tasks.
+2. Requests with disallowed content.
+3. Missing dataset paths or parameters.
 
 Project context & coding conventions
-Repository layout
-```
+repo tree:
 .
-├── notebooks/              # all generated .ipynb files
-├── env/                    # environment artifacts (auto-generated)
-├── data/                   # small toy EEG or synthetic P300 data (<50 MB)
-├── tests/                  # pytest smoke tests
-├── agent.md                # ← you are here
-├── environment.yaml        # conda spec
-└── setup.sh                # bootstrap script
-```
-Only lightweight toy examples are committed here. Large datasets like **BigP3BCI**
-must live outside the repository or be retrieved via scripts/symlinks. Use the
-environment variable `NEURO_DATA_ROOT` (default `~/neuro-data`) to locate such
-assets.
-Python 3.11+, strict type hints (from __future__ import annotations).
-
-Format with black (black -l 88) and isort (profile = black).
-
-All notebooks must be self-documenting: every major step has a preceding Markdown cell explaining why, not just how.
-
-Use MNE-Python for EEG I/O and preprocessing, scikit-learn for the baseline LDA classifier, and matplotlib/ipywidgets for visualisation & interactivity.
-
-Default filtering 0.1 – 30 Hz, down-sample to 128 Hz, epoch −0.2 s…0.8 s, baseline −0.2 s…0 s, LDA window 250–450 ms.
+├── notebooks/
+├── env/
+├── data/
+├── tests/
+├── agent.md  # this file
+├── environment.yaml
+└── setup.sh
+Use Python 3.11. Format with black -l 88 and isort (profile=black).
+Default band-pass 0.1–30 Hz, down-sample 128 Hz, epoch −0.2…0.8 s.
 
 Decomposition logic
-When you see the task “Create P300 notebook” do the following:
-
-Inspect prompt context – extract dataset path, desired frequency cut-offs, channel list, etc.
-
-Create notebook skeleton in notebooks/p300_starter.ipynb with title, overview, version printout.
-
-Load data (mne.io.read_raw_*). If no path provided, download/open source BNCI-Horizon 008-2014 or synthesize 1-min toy data.
-
-Pre-process – band-pass (0.1–30 Hz), notch if 50/60 Hz needed, decimate to 128 Hz.
-
-Epoch & baseline-correct – events for target / non-target.
-
-Feature extraction & LDA – flatten epochs, run 10-fold stratified CV, print accuracy, confusion matrix.
-
-Visualise – ERP grand average, scalp maps of LDA coefficients.
-
-Self-check – if tests/ exists, execute notebook via nbclient or papermill, then run pytest.
-
-Polish – run nbqa black, strip execution counts, save, commit.
+1. Inspect prompt/context for dataset and parameters.
+2. Create notebooks/p300_starter.ipynb skeleton with title and version.
+3. Load or synthesize data.
+4. Pre-process → epoch → baseline-correct.
+5. Train LDA with 10-fold CV; require accuracy ≥ 0.60.
+6. Visualise ERP and scalp map.
+7. Self-check: run notebook headless with nbclient, then pytest.
+8. Format with black and nbqa; save.
+9. If any test fails, append error summary as a markdown cell, fix the notebook and re-run.
 
 Run-tests
-```
-#!/usr/bin/env bash
-set -euo pipefail
+```bash
 source ~/.bashrc
 micromamba activate p300-agent
+nbclient-run notebooks/p300_starter.ipynb  # or papermill
 pytest -q
 ```
+
 PR-message template
-### 📚 What was generated
-* Added/updated notebook(s): {notebook paths}
-* Auto-formatted with black + isort
-* Environment: environment.yaml updated? {yes/no}
+```markdown
+### 📚 What was generated
+* Added/updated notebook(s): {list}
 
-### ✅ How it was validated
-* All smoke tests pass (`pytest -q`)
-* Notebook executed headless via nbclient without error
+### ✅ Validation
+* Notebook executed headless
+* `pytest -q` passed
 
-### 🔬 Next steps
-* Review visual output cells for sanity
-* Extend tests with dataset-specific metrics if needed
+### 🔬 Next steps
+* Review plots for sanity
+```
+
+Style & size guidelines
+1. Prefer numbered bullets.
+2. ≤ 120 characters per line.
+3. ≤ 150 visible lines total.
+4. No blank top line; UTF-8 LF endings.
+
+Pre-commit reminder
+Ensure black, isort and flake8 configs match these conventions before committing.
