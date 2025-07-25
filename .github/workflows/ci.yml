@@ -35,7 +35,7 @@ jobs:
         run: |
           set -e
           find notebooks -name '*.ipynb' -print0 | \
-            xargs -0 -n1 micromamba run -n p300-agent python -m nbclient --execute --to notebook --inplace
+            xargs -0 -n1 micromamba run -n p300-agent jupyter execute --inplace
 
       - name: Run pytest
         run: micromamba run -n p300-agent pytest -q
