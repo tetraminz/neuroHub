@@ -20,7 +20,7 @@ jobs:
           cache-environment: true
 
       - name: Install testing tools
-        run: micromamba run -n p300-agent pip install nbclient flake8
+        run: micromamba run -n p300-agent pip install nbclient flake8 isort
 
       - name: Run black
         run: micromamba run -n p300-agent black --check .
