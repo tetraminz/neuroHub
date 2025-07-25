@@ -57,6 +57,18 @@ Choose the **Python (p300-agent)** kernel when opening notebooks.
 4. `pytest -q`
 5. `jupyter lab`
 
+## Pre-commit hooks
+
+Enable [pre-commit](https://pre-commit.com/) to automatically format and lint
+files before each commit. Install the tool once the environment is ready:
+
+```bash
+micromamba run -n p300-agent pip install pre-commit
+pre-commit install
+```
+
+Run `pre-commit run --all-files` to check the entire repository.
+
 ## Using BigP3BCI data
 
 The repository contains metadata for the **bigP3BCI** dataset but not the full

@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up micromamba
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-file: environment.yaml
+          environment-name: p300-agent
+          cache-downloads: true
+          cache-environment: true
+
+      - name: Install testing tools
+        run: micromamba run -n p300-agent pip install nbclient flake8
+
+      - name: Run black
+        run: micromamba run -n p300-agent black --check .
+
+      - name: Run isort
+        run: micromamba run -n p300-agent isort --check .
+
+      - name: Run flake8
+        run: micromamba run -n p300-agent flake8 .
+
+      - name: Execute notebooks
+        run: |
+          set -e
+          find notebooks -name '*.ipynb' -print0 | \
+            xargs -0 -n1 micromamba run -n p300-agent python -m nbclient --execute --to notebook --inplace
+
+      - name: Run pytest
+        run: micromamba run -n p300-agent pytest -q
