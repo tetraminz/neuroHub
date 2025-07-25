@@ -2,14 +2,13 @@ name: CI
 
 on:
   push:
-    branches: [main]
   pull_request:
 
 jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      NEURO_DATA_ROOT: ${{ env.HOME }}/neuro-data
+      NEURO_DATA_ROOT: $HOME/neuro-data
     steps:
       - uses: actions/checkout@v4
 
