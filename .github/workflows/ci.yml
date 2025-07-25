@@ -43,4 +43,10 @@ jobs:
             xargs -0 -n1 micromamba run -n p300-agent jupyter execute --inplace
 
       - name: Run pytest
-        run: micromamba run -n p300-agent pytest -q
+        run: micromamba run -n p300-agent pytest --cov=. --cov-report=xml -q
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage.xml
