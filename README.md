@@ -97,3 +97,6 @@ An example file path therefore looks like:
 ```
 StudyA/A_01/SE001/Train/CB/A_01_SE001_CB_Train01.edf
 ```
+
+Set the environment variable `NEURO_DATA_ROOT` to the folder containing the
+`bigP3BCI-data` directory. If unset, the code defaults to `~/neuro-data`.

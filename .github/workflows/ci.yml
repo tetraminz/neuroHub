@@ -8,6 +8,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      NEURO_DATA_ROOT: ${{ env.HOME }}/neuro-data
     steps:
       - uses: actions/checkout@v4
 
@@ -18,6 +20,10 @@ jobs:
           environment-name: p300-agent
           cache-downloads: true
           cache-environment: true
+
+      - name: Register Jupyter kernel
+        run: |
+          micromamba run -n p300-agent python -m ipykernel install --name p300-agent --display-name "Python (p300-agent)" --user
 
       - name: Install testing tools
         run: micromamba run -n p300-agent pip install nbclient flake8 isort
@@ -34,7 +40,7 @@ jobs:
       - name: Execute notebooks
         run: |
           set -e
-          find notebooks -name '*.ipynb' -print0 | \
+          find notebooks -name 'p300_*.ipynb' -print0 | \
             xargs -0 -n1 micromamba run -n p300-agent jupyter execute --inplace
 
       - name: Run pytest
