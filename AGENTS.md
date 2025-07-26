@@ -10,26 +10,37 @@ Refusal rules
 Project context & coding conventions
 repo tree:
 .
+├── neurohub/
+├── scripts/
 ├── notebooks/
-├── env/
 ├── data/
 ├── tests/
-├── agent.md  # this file
+├── AGENTS.md  # this file
 ├── environment.yaml
 └── setup.sh
 Use Python 3.11. Format with black -l 88 and isort (profile=black).
 Default band-pass 0.1–30 Hz, down-sample 128 Hz, epoch −0.2…0.8 s.
+Large data is tracked via DVC. Run `dvc pull` after cloning.
 
 Decomposition logic
-1. Inspect prompt/context for dataset and parameters.
-2. Create notebooks/p300_starter.ipynb skeleton with title and version.
-3. Load or synthesize data.
-4. Pre-process → epoch → baseline-correct.
-5. Train LDA with 10-fold CV; require accuracy ≥ 0.60.
-6. Visualise ERP and scalp map.
-7. Self-check: run notebook headless with nbclient, then pytest.
-8. Format with black and nbqa; save.
-9. If any test fails, append error summary as a markdown cell, fix the notebook and re-run.
+1. Parse prompt → extract `data_path`, filter settings, channels.
+2. Generate notebook skeleton `notebooks/p300_starter.ipynb` (title, env printout).
+3. Import helpers from `neurohub.*`.
+4. Load data
+
+   * `neurohub.io.load(raw_path)` if `data_path` valid,
+   * else `neurohub.io.load_bnci_008_2014()` (download toy) or `neurohub.io.synthetic()` if offline.
+5. Pre-process with `neurohub.preproc.bandpass(raw, 0.1, 30).decimate(128)`.
+6. Epoch & baseline-correct using `neurohub.preproc.make_epochs(...)`.
+7. Feature extraction & LDA via `neurohub.features.extract()` + `neurohub.models.lda_cv(k=10)`.
+8. Accuracy gate – assert mean CV ≥ 0.60; raise if lower (mirrors existing smoke test).
+9. Visualise ERP and LDA scalp map (`neurohub.viz.*`).
+10. Self-check loop
+
+    * Execute notebook headless (`nbclient`) and run `pytest`;
+    * On failure: append error summary, fix, re-run (max 3 retries).
+    * Mirrors IMO self-verification flow.
+11. Format & save notebook (`nbqa black`) and commit.
 
 Run-tests
 ```bash
