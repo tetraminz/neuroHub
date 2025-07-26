@@ -27,6 +27,9 @@ jobs:
       - name: Install testing tools
         run: micromamba run -n p300-agent pip install nbclient flake8 isort pytest-cov
 
+      - name: Install package
+        run: micromamba run -n p300-agent pip install -e .
+
       - name: Run black
         run: micromamba run -n p300-agent black --check .
 
@@ -39,11 +42,11 @@ jobs:
       - name: Execute notebooks
         run: |
           set -e
-          find notebooks -name 'p300_*.ipynb' -print0 | \
+          find notebooks -name '*.ipynb' -print0 | \
             xargs -0 -n1 micromamba run -n p300-agent jupyter execute --inplace
 
       - name: Run pytest
-        run: micromamba run -n p300-agent pytest --cov=. --cov-report=xml -q
+        run: micromamba run -n p300-agent pytest -q
 
       - name: Upload coverage
         uses: actions/upload-artifact@v4

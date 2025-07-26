@@ -23,25 +23,11 @@ Default band-pass 0.1–30 Hz, down-sample 128 Hz, epoch −0.2…0.8 s.
 Large data is tracked via DVC. Run `dvc pull` after cloning.
 
 Decomposition logic
-1. Parse prompt → extract `data_path`, filter settings, channels.
-2. Generate notebook skeleton `notebooks/p300_starter.ipynb` (title, env printout).
-3. Import helpers from `neurohub.*`.
-4. Load data
-
-   * `neurohub.io.load(raw_path)` if `data_path` valid,
-   * else `neurohub.io.load_bnci_008_2014()` (download toy). Raise if offline.
-   * Use `neurohub.io.synthetic()` only if explicitly requested by the user.
-5. Pre-process with `neurohub.preproc.bandpass(raw, 0.1, 30).decimate(128)`.
-6. Epoch & baseline-correct using `neurohub.preproc.make_epochs(...)`.
-7. Feature extraction & LDA via `neurohub.features.extract()` + `neurohub.models.lda_cv(k=10)`.
-8. Accuracy gate – assert mean CV ≥ 0.60; raise if lower (mirrors existing smoke test).
-9. Visualise ERP and LDA scalp map (`neurohub.viz.*`).
-10. Self-check loop
-
-    * Execute notebook headless (`nbclient`) and run `pytest`;
-    * On failure: append error summary, fix, re-run (max 3 retries).
-    * Mirrors IMO self-verification flow.
-11. Format & save notebook (`nbqa black`) and commit.
+1. Import neurohub, call run_p300_pipeline().
+2. nbclient-run the notebook(s).
+3. pytest -q.
+4. If tests fail → fix code, re-run (3 retries).
+5. nbqa black, commit.
 
 Run-tests
 ```bash
