@@ -8,7 +8,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      NEURO_DATA_ROOT: $HOME/neuro-data
+      NEURO_DATA_ROOT: ${{ github.workspace }}/data/bigp3bci-an-open-diverse-and-machine-learning-ready-p300-based-brain-computer-interface-dataset-1.0.0
     steps:
       - uses: actions/checkout@v4
 
