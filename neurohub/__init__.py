@@ -6,9 +6,7 @@ from pathlib import Path
 from typing import Optional
 
 import matplotlib.pyplot as plt
-import mne
 
-from . import config, features, io, preproc, viz
 from .config import DEFAULTS
 from .features import extract_features, lda_cv
 from .io import load_bnci, load_raw, synthetic
