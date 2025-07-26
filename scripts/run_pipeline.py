@@ -16,7 +16,12 @@ from neurohub import run_p300_pipeline
     help="Path to raw data",
 )
 @click.option(
-    "--out", "out_dir", type=click.Path(), required=True, help="Output directory"
+    "--out",
+    "out_dir",
+    type=click.Path(),
+    default="results",
+    show_default=True,
+    help="Output directory",
 )
 def main(data_path: str | None, out_dir: str) -> None:
     """Run the full pipeline and print accuracy."""

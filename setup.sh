@@ -41,6 +41,9 @@ micromamba create -y -n p300-agent -f environment.yaml
 
 micromamba activate p300-agent
 
+# install the package in editable mode
+pip install -e .
+
 # ----------------------------------------------------------------------
 # 4.  Register Jupyter kernel
 # ----------------------------------------------------------------------
