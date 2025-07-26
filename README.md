@@ -4,13 +4,17 @@ This repository provides minimal building blocks to experiment with event-relate
 
 ## Setup
 
-Run `setup.sh` to create the **p300-agent** environment and install the Jupyter kernel:
+Run `setup.sh` to create the **p300-agent** environment and install the Jupyter kernel.
+After activation run `pip install -e .` to link the `neurohub` package:
 
 ```bash
 bash setup.sh
+micromamba activate p300-agent
+pip install -e .
 ```
 
 The script downloads **micromamba**, creates the conda environment based on `environment.yaml` and registers a `p300-agent` kernel for Jupyter.
+The environment includes MNE, scikit-learn, click and DVC for data versioning.
 
 ## Data
 
@@ -19,8 +23,25 @@ Real datasets are not bundled with the repository.
 
 Place your own `.fif` recordings under `data/` if you wish to work with real data.
 
-`notebooks/p300_starter.ipynb` uses synthetic data by default but can be adapted
-to load real files from `data/`.
+`notebooks/p300_starter.ipynb` loads a toy dataset by default. Pass a path under
+`data/` to analyse your own files. Synthetic examples run only when explicitly
+requested.
+
+## Project layout
+
+```
+neurohub/   # reusable pipeline functions
+scripts/    # CLI wrappers
+notebooks/  # demos importing from neurohub
+data/       # DVC-tracked recordings
+tests/      # unit and smoke tests
+```
+
+Retrieve large assets with:
+
+```bash
+dvc pull
+```
 
 ## Running tests
 
@@ -53,9 +74,11 @@ Choose the **Python (p300-agent)** kernel when opening notebooks.
 
 1. `bash setup.sh`
 2. `micromamba activate p300-agent`
-3. Add recordings under `data/` (optional)
-4. `pytest -q`
-5. `jupyter lab`
+3. `pip install -e .` once
+4. Add recordings under `data/` (optional)
+5. `pytest -q`
+6. Run `python scripts/run_pipeline.py --data PATH` for the CLI demo
+7. `jupyter lab`
 
 ## Pre-commit hooks
 
