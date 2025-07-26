@@ -18,3 +18,5 @@ dependencies:
   - pytest-cov>=4.1
   - nbclient>=0.10
   - pip
+  - click>=8.1
+  - dvc>=3.40
