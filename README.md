@@ -77,8 +77,9 @@ Choose the **Python (p300-agent)** kernel when opening notebooks.
 3. `pip install -e .` once
 4. Add recordings under `data/` (optional)
 5. `pytest -q`
-6. Run `python scripts/run_pipeline.py --data PATH` for the CLI demo
+6. Run `python scripts/run_pipeline.py --data PATH --out results` for the CLI demo
 7. `jupyter lab`
+8. Or run `make test` and `make notebooks` for quick checks
 
 ## Pre-commit hooks
 
