@@ -52,6 +52,7 @@ def make_epochs(
         tmin=tmin,
         tmax=tmax,
         baseline=None,
+        event_repeated="drop",
         preload=True,
         verbose=False,
     )
