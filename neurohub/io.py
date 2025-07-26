@@ -6,6 +6,7 @@ from pathlib import Path
 
 import mne
 import numpy as np
+import pandas as pd
 
 
 def load_raw(path: str | Path) -> mne.io.BaseRaw:
@@ -58,3 +59,34 @@ def synthetic(duration: float = 60.0, sfreq: int = 256) -> mne.io.Raw:
     anns = mne.Annotations(onsets, durations, desc)
     raw.set_annotations(anns)
     return raw
+
+
+def load_bigp3bci(path: Path) -> mne.io.BaseRaw:
+    """Load a BigP3BCI EDF file, raising an informative error if missing."""
+    path = Path(path)
+    if not path.exists():
+        raise FileNotFoundError(f"{path} not found. Please run `dvc pull`.")
+    return mne.io.read_raw_edf(path, preload=True, verbose=False)
+
+
+def list_dataset_structure(root: Path) -> pd.DataFrame:
+    """Return a table describing all EDF files under ``root``."""
+    root = Path(root)
+    rows = []
+    for edf in root.glob("**/*.edf"):
+        rel = edf.relative_to(root)
+        parts = rel.parts
+        if len(parts) < 6:
+            continue
+        rows.append(
+            {
+                "study": parts[0],
+                "subject": parts[1],
+                "session": parts[2],
+                "subset": parts[3],
+                "paradigm": parts[4],
+                "file": parts[5],
+                "path": edf,
+            }
+        )
+    return pd.DataFrame(rows)

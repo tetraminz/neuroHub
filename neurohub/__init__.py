@@ -9,18 +9,29 @@ import matplotlib.pyplot as plt
 
 from .config import DEFAULTS
 from .features import extract_features, lda_cv
-from .io import load_bnci, load_raw, synthetic
-from .preproc import bandpass, decimate, make_epochs, notch
+from .io import list_dataset_structure, load_bigp3bci, load_bnci, load_raw, synthetic
+from .preproc import (
+    apply_bandpass,
+    bandpass,
+    decimate,
+    make_epochs,
+    notch,
+    plot_filter_response,
+)
 from .viz import plot_erp, plot_scalp
 
 __all__ = [
     "load_raw",
     "load_bnci",
+    "load_bigp3bci",
+    "list_dataset_structure",
     "synthetic",
     "bandpass",
+    "apply_bandpass",
     "notch",
     "decimate",
     "make_epochs",
+    "plot_filter_response",
     "extract_features",
     "lda_cv",
     "plot_erp",
